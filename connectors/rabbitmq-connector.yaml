@@ -1,0 +1,19 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: connector
+spec:
+  name: connector
+  class: "io.confluent.connect.rabbitmq.RabbitMQSourceConnector"
+  taskMax: 4
+  configs:
+    kafka.topic: acfc
+    rabbitmq.queue: acfc
+    rabbitmq.host: rabbitmq.confluent.svc.cluster.local
+    rabbitmq.port: "5672"
+    rabbitmq.username: admin
+    rabbitmq.password: admin
+    rabbitmq.prefetch.count: "500"
+    rabbitmq.automatic.recovery.enabled: "true"
+    rabbitmq.network.recovery.interval.ms: "10000"
+    rabbitmq.topology.recovery.enabled: "true"

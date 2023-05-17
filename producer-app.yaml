@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: producer-app
+  namespace: confluent
+spec:
+  template:
+    metadata:
+      labels:
+        app: producer-app
+    spec:
+      containers:
+      - image: confluentinc/cp-kafka:latest
+        name: producer-app
+        resources: 
+          requests:
+            memory: 512Mi
+            cpu: 500m
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            kafka-producer-perf-test \
+              --topic elastic-0  \
+              --record-size 64 \
+              --throughput 1 \
+              --producer.config /mnt/kafka.properties \
+              --num-records 100
+        volumeMounts:
+          - name: kafka-properties
+            mountPath: /mnt
+            readOnly: true
+      volumes:
+        - name: kafka-properties # Create secret with name `kafka-client-config` with client configurations
+          secret:
+            secretName: kafka-client-config
+      restartPolicy: Never
