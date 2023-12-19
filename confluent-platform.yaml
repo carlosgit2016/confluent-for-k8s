@@ -49,6 +49,9 @@ spec:
                     owner: confluentinc
                     version: latest
               locationType: confluentHub
+  configOverrides:
+      jvm:
+          - "-Djava.security.auth.login.config=/kvmnt/plain-jaas.conf"
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
